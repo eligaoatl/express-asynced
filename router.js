@@ -22,3 +22,15 @@ app.get('/', asyncMiddleware, (req,res) => {
   const { title, body } = req.data;
   req.render('post', { title, body });
 })
+
+// High order function to catch promise exception
+const asyncHandler = fn => (req, res, next) =>
+  Promise
+    .resolve(fn(req, res, next))
+    .catch(next)
+
+
+app.get('/hello', asyncHandler( (req, res, next) => {
+  // Some code here. Any error will be catch and pass to expressjs
+}) );
+
